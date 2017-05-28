@@ -8,7 +8,7 @@
 	<!-- 可以用于加载配置项或者配置文件，在整个配置文件中就可以使用${propertyKey}的方式来引用配置项 resource：配置资源加载地址，使用resource，MBG从classpath开始找，比如com/myproject/generatorConfig.properties 
 		url：配置资源加载地质，使用URL的方式，比如file:///C:/myfolder/generatorConfig.properties. 注意，两个属性只能选址一个; -->
 	<!-- 另外，如果使用了mybatis-generator-maven-plugin，那么在pom.xml中定义的properties都可以直接在generatorConfig.xml中使用 -->
-	<context id="testTables" targetRuntime="MyBatis3">
+	<context id="myContext" targetRuntime="MyBatis3" defaultModelType="flat">
 		<!-- 这里要注意配置顺序 -->
 		<!-- property* -->
 		<!-- plugin* -->
@@ -19,28 +19,38 @@
 		<!-- sqlMapGenerator? -->
 		<!-- javaClientGenerator? -->
 		<!-- table+ -->
+		
+		<property name="javaFileEncoding" value="UTF-8"/>
+		<!-- 如果你想使用模板来定制生成的java文件和xml文件的样式，你可以通过指定这两个属性的值来实现 -->
+	    <!-- <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/> -->
+	    <!-- <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/> -->
+		
+		<!-- 由于beginningDelimiter和endingDelimiter的默认值为双引号(")
+            指明数据库的用于标记数据库对象名的符号，比如ORACLE就是双引号，MYSQL默认是`反引号 -->
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
 
 		<!-- 自定义插件：genenater entity时，生成toString -->
-		<plugin type="org.mybatis.generator.plugins.tostring.MyToStringPlugin">
+		<plugin type="cn.tisson.mybatis.generator.plugins.MyToStringPlugin">
 			<!-- 是否打印super类的toString -->
 			<!-- <property name="useToStringFromRoot" value="true"/> -->
 		</plugin>
 
 		<!-- 自定义物理分页 可生成支持Mysql数据的limit 不支持Oracle -->
-		<!-- <plugin type="org.mybatis.generator.plugins.page.PaginationPlugin" 
-			/> -->
+		<!-- 生成一个新的selectByExample方法，这个方法可以接收offset和limit参数，主要用来实现分页 -->
+        <plugin type="cn.tisson.mybatis.generator.plugins.page.MySQLPaginationPlugin"></plugin>
 
-		<!-- 自带插件：自定义查询指定字段 -->
-		<plugin type="org.mybatis.generator.plugins.field.FieldsPlugin" />
+		<!-- 自定义插件：自定义查询指定字段 -->
+		<plugin type="cn.tisson.mybatis.generator.plugins.field.MyQueryFieldsPlugin" />
 
 		<!-- 自定义插件：此处是将UserMapper.xml改名为UserDao.xml -->
-		<plugin type="org.mybatis.generator.plugins.rename.RenameSqlMapperPlugin">
+		<plugin type="cn.tisson.mybatis.generator.plugins.rename.RenameXmlMapperFileNamePlugin">
 			<property name="searchString" value="Mapper" />
 			<property name="replaceString" value="Dao" />
 		</plugin>
 
 		<!-- 自定义插件：此处是将UserMapper改名为UserDao -->
-		<plugin type="org.mybatis.generator.plugins.rename.RenameJavaMapperPlugin">
+		<plugin type="cn.tisson.mybatis.generator.plugins.rename.RenameJavaMapperTypePlugin">
 			<property name="searchString" value="Mapper$" />
 			<property name="replaceString" value="Dao" />
 		</plugin>
@@ -52,18 +62,20 @@
 		</plugin>
 
 		<!-- 自带插件：JavaBean 实现 序列化 接口 -->
-		<plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+		<plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
+		<!-- 为生成的Java模型类添加序列化接口，并生成serialVersionUID字段 -->
+        <!-- <plugin type="cn.tisson.mybatis.generator.plugins.MySerializablePlugin">
+            <property name="suppressJavaInterface" value="false"/>
+        </plugin> -->
 
 		<!-- 自带插件：开启支持内存分页 可生成 支持内存分布的方法及参数 -->
 		<!-- <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin" /> -->
 
 		<!-- 自带插件：generate entity时，生成hashcode和equals方法 -->
-		<!-- <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" 
-			/> -->
+		<!-- <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" /> -->
 
 		<!-- 自定义插件：这个注释插件，Oracle数据库无效，MySQL有效 -->
-		<commentGenerator
-			type="org.mybatis.generator.plugins.comment.MyCommentGenerator">
+		<commentGenerator type="cn.tisson.mybatis.generator.plugins.MyCommentGenerator">
 			<!-- 是否去除自动生成的注释：true-是，false-否 -->
 			<property name="suppressAllComments" value="false" />
 			<property name="addRemarkComments" value="true" />
@@ -74,16 +86,30 @@
 		<!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
 		<!-- <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/test" 
 			userId="xxx" password="xxx000"> </jdbcConnection> -->
-		<jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver"
-			connectionURL="jdbc:oracle:thin:@localhost:1521" userId="xxx"
-			password="xxx000">
+		<!-- <jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver"
+			connectionURL="jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=10.121.10.101)(PORT=1521))(ADDRESS=(PROTOCOL=TCP)(HOST=10.121.10.102)(PORT=1521))(LOAD_BALANCE=yes)(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=RACDB)(FAILOVER_MODE=(TYPE=SELECT)(METHOD=BASIC)(RETRIES=180)(DELAY=5))))"
+			userId="kbt"
+			password="kbt123">
+		</jdbcConnection> -->
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://127.0.0.1:3306/tisson" userId="root" password="123456">
 		</jdbcConnection>
 
-		<!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer，为true时把JDBC DECIMAL 
-			和 NUMERIC 类型解析为java.math.BigDecimal -->
-		<javaTypeResolver>
-			<property name="forceBigDecimals" value="false" />
-		</javaTypeResolver>
+		<!-- java类型处理器
+		        用于处理DB中的类型到Java中的类型，默认使用JavaTypeResolverDefaultImpl；
+		        注意一点，默认会先尝试使用Integer，Long，Short等来对应DECIMAL和 NUMERIC数据类型；
+		-->
+        <javaTypeResolver>
+            <!--
+                true：使用BigDecimal对应DECIMAL和 NUMERIC数据类型
+                false：默认,
+                    scale>0;length>18：使用BigDecimal;
+                    scale=0;length[10,18]：使用Long；
+                    scale=0;length[5,9]：使用Integer；
+                    scale=0;length<5：使用Short；
+             -->
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
 
 		<!-- targetProject:生成POJO类的位置 -->
 		<javaModelGenerator targetPackage="cn.tisson.wechat.pojo"
@@ -98,14 +124,14 @@
 			<!-- <property name="trimStrings" value="false" /> -->
 		</javaModelGenerator>
 
-		<!-- targetProject:mapper映射文件生成的位置 -->
+		<!-- mapper.xml映射文件生成的位置 -->
 		<sqlMapGenerator targetPackage="cn.tisson.wechat.dao"
 			targetProject=".\src\main\resources">
 			<property name="enableSubPackages" value="false" />
 		</sqlMapGenerator>
 
-		<!-- targetPackage：mapper接口生成的位置 -->
-		<javaClientGenerator type="XMLMAPPER"
+		<!-- mapper.java接口生成的位置 -->
+		<javaClientGenerator type="XMLMAPPER" 
 			targetPackage="cn.tisson.wechat.dao" targetProject=".\src\main\java">
 			<property name="enableSubPackages" value="false" />
 		</javaClientGenerator>
@@ -127,7 +153,7 @@
 		<!-- 13：modelType：参考context元素的defaultModelType，相当于覆盖 -->
 		<!-- 14：delimitIdentifiers：参考tableName的解释，注意，默认的delimitIdentifiers是双引号，如果类似MYSQL这样的数据库，使用的是`（反引号，那么还需要设置context的beginningDelimiter和endingDelimiter属性） -->
 		<!-- 15：delimitAllColumns：设置是否所有生成的SQL中的列名都使用标识符引起来。默认为false，delimitIdentifiers参考context的属性 -->
-		<table schema="" tableName="EM_T_DICT">
+		<!-- <table schema="" tableName="IM_WX_DATACUBE_ARTICLE_SUMMARY"> -->
 			<!-- 参考 javaModelGenerator 的 constructorBased属性 -->
 			<!-- <property name="constructorBased" value="false" /> -->
 
@@ -159,6 +185,8 @@
 				注意，MBG是使用java.util.regex.Matcher.replaceAll来替换searchString和replaceString的， 
 				如果使用了columnOverride元素，该属性无效； -->
 			<!-- <columnRenamingRule searchString="" replaceString=""/> -->
-		</table>
+		<!-- </table> -->
+		<table tableName="upms_log" domainObjectName="UpmsLog"></table>
+		<table tableName="upms_system" domainObjectName="UpmsSystem"></table>
 	</context>
 </generatorConfiguration>

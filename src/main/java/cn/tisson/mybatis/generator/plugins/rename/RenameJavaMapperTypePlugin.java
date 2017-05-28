@@ -1,47 +1,47 @@
-package org.mybatis.generator.plugins.rename;
+package cn.tisson.mybatis.generator.plugins.rename;
 
 
-import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
-import static org.mybatis.generator.internal.util.messages.Messages.getString;
+import org.mybatis.generator.api.IntrospectedTable;
+import org.mybatis.generator.api.PluginAdapter;
 
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.mybatis.generator.api.PluginAdapter;
-import org.mybatis.generator.api.IntrospectedTable;
+import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
+import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
 /**
- * This plugin demonstrates overriding the initialized() method to rename the generated example
- * classes. Instead of xxxExample, the classes will be named xxxCriteria
- * 
- * This plugin accepts two properties:
+ * 重命名生成的Mapper类的名字：也就是把生成的类中的Mapper替换其他，比如Dao
+ * <p>
+ * 插件接收2个属性:
  * <ul>
  * <li><tt>searchString</tt> (required) the regular expression of the name search.</li>
  * <li><tt>replaceString</tt> (required) the replacement String.</li>
  * </ul>
- * 
+ *
  * For example, to change the name of the generated Example classes from xxxExample to xxxCriteria,
  * specify the following:
- * 
+ *
  * <dl>
  * <dt>searchString</dt>
  * <dd>Example$</dd>
  * <dt>replaceString</dt>
  * <dd>Criteria</dd>
  * </dl>
- * 
- * 
- * @author Jeff Butler
- * 
+ *
+ *
+ * @author Created by yl on 2017/05/28.
+ *
  */
-public class RenameJavaMapperPlugin extends PluginAdapter {
+public class RenameJavaMapperTypePlugin extends PluginAdapter {
     private String searchString;
     private String replaceString;
     private Pattern pattern;
 
 
-    public RenameJavaMapperPlugin() {}
+    public RenameJavaMapperTypePlugin() {
+    }
 
     public boolean validate(List<String> warnings) {
         searchString = properties.getProperty("searchString"); //$NON-NLS-1$

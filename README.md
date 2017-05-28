@@ -10,3 +10,7 @@ mybatis-generator-core 1.3.5逆向工程缺点：
 
 
 可以执行Generator.java进行测试，配置是src/test/resource/mybatis-generator.xml
+
+接口名
+IntrospectedTable
+DefaultDAOMethodNameCalculator
