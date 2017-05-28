@@ -86,10 +86,7 @@
 		<!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
 		<!-- <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/test" 
 			userId="xxx" password="xxx000"> </jdbcConnection> -->
-		<!-- <jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver"
-			connectionURL="jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=10.121.10.101)(PORT=1521))(ADDRESS=(PROTOCOL=TCP)(HOST=10.121.10.102)(PORT=1521))(LOAD_BALANCE=yes)(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=RACDB)(FAILOVER_MODE=(TYPE=SELECT)(METHOD=BASIC)(RETRIES=180)(DELAY=5))))"
-			userId="kbt"
-			password="kbt123">
+		<!-- <jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver" connectionURL="" userId="" password="">
 		</jdbcConnection> -->
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
 			connectionURL="jdbc:mysql://127.0.0.1:3306/tisson" userId="root" password="123456">
