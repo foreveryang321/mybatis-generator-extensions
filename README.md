@@ -5,6 +5,8 @@ mybatis-generator-core的自定义插件集. mybatis-generator是一个帮助自
 
 支持jdk版本为1.6或者1.6+  
 
+> 自定义生成代码插件集（推荐这种方法）
+
 本插件集解决了mybatis-generator-core
 ```
 1、不能查询动态语句（查询所有数据表字段，这样对内存消耗比较大）
@@ -34,3 +36,31 @@ oracle.properties
 
 运行Generator（class cn.tisson.mybatis.Generator）类就可以自动生成mybatis需要的代码了。
 
+> mybatis generator maven代码生成插件
+```xml
+<plugin>
+    <groupId>org.mybatis.generator</groupId>
+    <artifactId>mybatis-generator-maven-plugin</artifactId>
+    <version>1.3.2</version>
+    <configuration>
+        <configurationFile>src/test/resources/mybatis-generator.xml</configurationFile>
+        <verbose>true</verbose>
+        <overwrite>true</overwrite>
+    </configuration>
+    <executions>
+        <execution>
+            <id>Generate MyBatis Artifacts</id>
+            <goals>
+                <goal>generate</goal>
+            </goals>
+        </execution>
+    </executions>
+    <dependencies>
+        <dependency>
+            <groupId>org.mybatis.generator</groupId>
+            <artifactId>mybatis-generator-core</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+    </dependencies>
+</plugin>
+```
