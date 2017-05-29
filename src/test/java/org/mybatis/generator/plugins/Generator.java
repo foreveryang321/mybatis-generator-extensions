@@ -32,13 +32,15 @@ public class Generator {
 
     public void generator() throws Exception {
         List<String> warnings = new ArrayList<String>();
-        boolean overwrite = true;
         File file = getFile("mybatis-generator.xml");// new File("mybatis-generator.xml");
         ConfigurationParser cp = new ConfigurationParser(warnings);
         Configuration config = cp.parseConfiguration(file);
-        DefaultShellCallback callback = new DefaultShellCallback(overwrite);
+        DefaultShellCallback callback = new DefaultShellCallback(true);
         MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
         myBatisGenerator.generate(null);
+        for (String string : warnings) {
+            LOG.warn("warnings: {}", string);
+        }
     }
 
     public static void main(String[] args) throws Exception {
