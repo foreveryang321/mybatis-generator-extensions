@@ -8,8 +8,8 @@
     <!-- 可以用于加载配置项或者配置文件，在整个配置文件中就可以使用${propertyKey}的方式来引用配置项 resource：配置资源加载地址，使用resource，MBG从classpath开始找，比如com/myproject/generatorConfig.properties
         url：配置资源加载地质，使用URL的方式，比如file:///C:/myfolder/generatorConfig.properties. 注意，两个属性只能选址一个; -->
     <!-- 另外，如果使用了mybatis-generator-maven-plugin，那么在pom.xml中定义的properties都可以直接在generatorConfig.xml中使用 -->
-    <properties resource="mysql.properties"/>
-    <!--<properties resource="oracle.properties" />-->
+    <properties resource="mysql.properties"></properties>
+    <!-- <properties resource="oracle.properties"</properties>> -->
 
     <context id="MysqlContext" targetRuntime="MyBatis3" defaultModelType="flat">
         <!-- 这里要注意配置顺序 -->
@@ -60,7 +60,7 @@
         </plugin>-->
 
         <!-- 自带插件：JavaBean 实现 序列化 接口 -->
-        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
         <!-- 为生成的Java模型类添加序列化接口，并生成serialVersionUID字段 -->
         <!-- <plugin type="cn.tisson.mybatis.generator.plugins.MySerializablePlugin">
             <property name="suppressJavaInterface" value="false"/>
@@ -70,7 +70,7 @@
         <!-- <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin" /> -->
 
         <!-- 自带插件：generate entity时，生成hashcode和equals方法 -->
-        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>
+        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"></plugin>
 
         <!-- 自定义插件：genenater entity时，生成toString -->
         <plugin type="cn.tisson.mybatis.generator.plugins.MyToStringPlugin">
@@ -99,7 +99,6 @@
                 用于处理DB中的类型到Java中的类型，默认使用JavaTypeResolverDefaultImpl；
                 注意一点，默认会先尝试使用Integer，Long，Short等来对应DECIMAL和 NUMERIC数据类型；
         -->
-        <javaTypeResolver>
             <!--
                 true：使用BigDecimal对应DECIMAL和 NUMERIC数据类型
                 false：默认,
@@ -108,6 +107,7 @@
                     scale=0;length[5,9]：使用Integer；
                     scale=0;length<5：使用Short；
              -->
+        <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
 
@@ -125,15 +125,13 @@
         </javaModelGenerator>
 
         <!-- mapper.xml 映射文件生成的位置 -->
-        <sqlMapGenerator targetPackage="${package.pojo}"
+        <sqlMapGenerator targetPackage="${package.mapper}"
                          targetProject="${target.project}\src\main\resources">
-            <property name="enableSubPackages" value="false"/>
         </sqlMapGenerator>
 
         <!-- mapper 类生成的位置 -->
         <javaClientGenerator type="XMLMAPPER" targetPackage="${package.mapper}"
                              targetProject="${target.project}\src\main\java">
-            <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
 
         <!-- 指定数据库表 -->
@@ -186,7 +184,7 @@
             如果使用了columnOverride元素，该属性无效； -->
         <!-- <columnRenamingRule searchString="" replaceString=""/> -->
         <!-- </table> -->
-        <!-- <table tableName="upms_log" domainObjectName="UpmsLog"/> -->
-        <table tableName="upms_system" domainObjectName="UpmsSystem"/>
+        <table schema="" tableName="upms_log" domainObjectName="UpmsLog"></table>
+        <table schema="" tableName="upms_system" domainObjectName="UpmsSystem"></table>
     </context>
 </generatorConfiguration>
