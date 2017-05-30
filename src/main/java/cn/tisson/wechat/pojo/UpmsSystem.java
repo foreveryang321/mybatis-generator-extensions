@@ -22,7 +22,7 @@ import java.util.Date;
  * </table>
  * </pre>
  * 
- * @author Created by Mybatis Generator on 2017/05/29.
+ * @author Created by Mybatis Generator on 2017/05/31.
  */
 public class UpmsSystem implements Serializable {
     private Integer systemId;

@@ -11,7 +11,7 @@
     <properties resource="mysql.properties"/>
     <!--<properties resource="oracle.properties" />-->
 
-    <context id="myContext" targetRuntime="MyBatis3" defaultModelType="flat">
+    <context id="MysqlContext" targetRuntime="MyBatis3" defaultModelType="flat">
         <!-- 这里要注意配置顺序 -->
         <!-- property* -->
         <!-- plugin* -->
@@ -35,11 +35,11 @@
 
         <!-- 自定义物理分页 可生成支持Mysql数据的limit 不支持Oracle -->
         <!-- 生成一个新的selectByExample方法，这个方法可以接收offset和limit参数，主要用来实现分页 -->
-        <!--<plugin type="cn.tisson.mybatis.generator.plugins.page.MySQLPaginationPlugin"/>-->
-        <plugin type="${pagination.plugin}"/>
+        <!-- <plugin type="cn.tisson.mybatis.generator.plugins.page.MySQLPaginationPlugin"/> -->
+        <!-- <plugin type="${pagination.plugin}"/> -->
 
         <!-- 自定义插件：自定义查询指定字段 -->
-        <plugin type="cn.tisson.mybatis.generator.plugins.field.MyQueryFieldsPlugin"/>
+        <!-- <plugin type="cn.tisson.mybatis.generator.plugins.field.MyQueryFieldsPlugin"/> -->
 
         <!--&lt;!&ndash; 自定义插件：此处是将UserMapper.xml改名为UserDao.xml &ndash;&gt;
         <plugin type="cn.tisson.mybatis.generator.plugins.rename.RenameXmlMapperFileNamePlugin">
@@ -77,6 +77,9 @@
             <!-- 是否打印super类的toString -->
             <!-- <property name="useToStringFromRoot" value="true"/> -->
         </plugin>
+        
+        <!-- 为Mapper类中生成的方法添加注释 -->
+        <plugin type="cn.tisson.mybatis.generator.plugins.MapperMethodCommentPluginAdaptor"></plugin>
 
         <!-- 自定义插件：这个注释插件，Oracle数据库无效，MySQL有效 -->
         <commentGenerator type="cn.tisson.mybatis.generator.plugins.MyCommentGenerator">
@@ -183,7 +186,7 @@
             如果使用了columnOverride元素，该属性无效； -->
         <!-- <columnRenamingRule searchString="" replaceString=""/> -->
         <!-- </table> -->
-        <table tableName="upms_log" domainObjectName="UpmsLog"/>
+        <!-- <table tableName="upms_log" domainObjectName="UpmsLog"/> -->
         <table tableName="upms_system" domainObjectName="UpmsSystem"/>
     </context>
 </generatorConfiguration>

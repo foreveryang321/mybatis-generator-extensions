@@ -62,11 +62,11 @@ public class RenameXmlMapperFileNamePlugin extends PluginAdapter {
     }
 
     @Override
-    public void initialized(IntrospectedTable arg0) {
-        String oldType = arg0.getMyBatis3XmlMapperFileName();
+    public void initialized(IntrospectedTable table) {
+        String oldType = table.getMyBatis3XmlMapperFileName();
         Matcher matcher = pattern.matcher(oldType);
         oldType = matcher.replaceAll(replaceString);
-        arg0.setMyBatis3XmlMapperFileName(oldType);
+        table.setMyBatis3XmlMapperFileName(oldType);
     }
 }
 

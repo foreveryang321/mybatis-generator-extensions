@@ -11,12 +11,6 @@ public class UpmsSystemExample {
 
     protected List<Criteria> oredCriteria;
 
-    private Integer limit;
-
-    private Integer offset;
-
-    protected String fields;
-
     public UpmsSystemExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
@@ -68,30 +62,6 @@ public class UpmsSystemExample {
         oredCriteria.clear();
         orderByClause = null;
         distinct = false;
-    }
-
-    public void setLimit(Integer limit) {
-        this.limit = limit;
-    }
-
-    public Integer getLimit() {
-        return limit;
-    }
-
-    public void setOffset(Integer offset) {
-        this.offset = offset;
-    }
-
-    public Integer getOffset() {
-        return offset;
-    }
-
-    public void setFields(String fields) {
-        this.fields=fields;
-    }
-
-    public String getFields() {
-        return fields;
     }
 
     protected abstract static class GeneratedCriteria {

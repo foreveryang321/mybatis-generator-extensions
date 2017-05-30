@@ -74,12 +74,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    <if test="fields == null">
-      system_id, icon, theme, basepath, status, name, title, description, ctime, orders
-    </if>
-    <if test="fields != null">
-      ${fields}
-    </if>
+    system_id, icon, theme, basepath, status, name, title, description, ctime, orders
   </sql>
   <select id="selectByExample" parameterType="cn.tisson.wechat.pojo.UpmsSystemExample" resultMap="BaseResultMap">
     select
@@ -94,18 +89,10 @@
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
-    <if test="limit != null">
-      <if test="offset != null">
-        limit ${offset}, ${limit}
-      </if>
-      <if test="offset == null">
-        limit ${limit}
-      </if>
-    </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
-    system_id,icon,theme,basepath,status,name,title,description,ctime,orders
+    <include refid="Base_Column_List" />
     from upms_system
     where system_id = #{systemId,jdbcType=INTEGER}
   </select>

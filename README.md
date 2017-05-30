@@ -5,7 +5,9 @@ mybatis-generator-core的自定义插件集. mybatis-generator是一个帮助自
 
 支持jdk版本为1.6或者1.6+  
 
-> 自定义生成代码插件集（推荐这种方法）
+* 注意：使用次插件时，最好保证数据表有primary key字段，否则不会生成ByPrimaryKey等操作方法
+
+> 自定义生成代码插件集
 
 本插件集解决了mybatis-generator-core
 ```
@@ -19,7 +21,7 @@ mybatis-generator-core的自定义插件集. mybatis-generator是一个帮助自
 - 自定义了RenameJavaMapperTypePlugin、RenameXmlMapperFileNamePlugin插件解决了这个问题
 5、序列化（官方已有序列化插件）
 ```
-分页插件，可以使用[PageHelper](https://github.com/pagehelper/Mybatis-PageHelper)插件替换，此插件使用上有一些要注意的问题。
+分页插件，推荐可以使用[PageHelper](https://github.com/pagehelper/Mybatis-PageHelper)插件替换，这样不用修改xml中的sql语句，此插件使用上有一些要注意的问题。
 
 配置请参考官方文档。
 
@@ -63,4 +65,8 @@ oracle.properties
         </dependency>
     </dependencies>
 </plugin>
+```
+然后执行
+```sh
+mvn  mybatis-generator:generate
 ```
